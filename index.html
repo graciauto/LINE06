@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>サロンのちから | サロン向けLINE構築×予約×リピート運用代行</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0EA5E9', // Sky Blue 500
+                        primaryHover: '#0284C7', // Sky Blue 600
+                        secondary: '#1E3A8A', // Navy (Indigo 900)
+                        accent: '#F0F9FF', // Sky Blue 50
+                        surface: '#F8FAFC', // Slate 50
+                        textMain: '#334155', // Slate 700
+                        textMuted: '#64748B', // Slate 500
+                        borderLight: '#E2E8F0', // Slate 200
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans JP"', '"Hiragino Kaku Gothic ProN"', 'Meiryo', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(14, 165, 233, 0.08)',
+                        'card': '0 10px 30px -5px rgba(14, 165, 233, 0.1)',
+                    },
+                    borderRadius: {
+                        'xl': '1rem',
+                        '2xl': '1.25rem',
+                        '3xl': '1.5rem',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 薄いドットパターンの背景 */
+        .bg-dot-pattern {
+            background-color: #ffffff;
+            background-image: radial-gradient(#E2E8F0 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+        /* スムーススクロール */
+        html { scroll-behavior: smooth; }
+        /* アコーディオンの矢印アニメーション */
+        details > summary { list-style: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        details[open] summary svg { transform: rotate(180deg); }
+    </style>
+</head>
+<body class="font-sans text-textMain bg-white antialiased">
+
+    <!-- Header -->
+    <header class="fixed w-full bg-white/90 backdrop-blur-md border-b border-borderLight z-50">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xl">S</div>
+                <span class="font-bold text-xl tracking-tight text-secondary">サロンのちから</span>
+            </div>
+            
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex gap-8 text-sm font-medium text-textMain">
+                <a href="#features" class="hover:text-primary transition">Features</a>
+                <a href="#reasons" class="hover:text-primary transition">Reasons</a>
+                <a href="#flow" class="hover:text-primary transition">Flow</a>
+                <a href="#price" class="hover:text-primary transition">Price</a>
+                <a href="#faq" class="hover:text-primary transition">FAQ</a>
+            </nav>
+
+            <!-- Header CTA -->
+            <div class="hidden sm:flex gap-3">
+                <a href="#contact" class="px-5 py-2.5 text-sm font-bold text-primary border border-primary rounded-full hover:bg-accent transition">資料請求</a>
+                <a href="#contact" class="px-5 py-2.5 text-sm font-bold text-white bg-primary rounded-full shadow-lg shadow-primary/30 hover:bg-primaryHover transition">無料診断（30分）</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-dot-pattern">
+        <!-- 背景装飾 -->
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-[600px] h-[600px] bg-accent rounded-full blur-3xl opacity-60 pointer-events-none"></div>
+        
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                
+                <!-- Left: Copy & CTA -->
+                <div class="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left mb-16 lg:mb-0">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent text-primary text-sm font-bold mb-6 border border-primary/20">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        2年で20店舗拡大のFC本部ノウハウを提供
+                    </div>
+                    
+                    <h1 class="text-4xl sm:text-5xl lg:text-[42px] xl:text-5xl font-bold text-secondary leading-[1.4] mb-6">
+                        サロンのLINE集客・予約<br class="hidden sm:block">
+                        リピート運用、<br>
+                        <span class="text-primary relative inline-block">
+                            面倒なITはすべて丸投げ。
+                            <svg class="absolute w-full h-3 -bottom-1 left-0 text-accent -z-10" fill="currentColor" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5 L 100 10 L 0 10 Z"></path></svg>
+                        </span>
+                    </h1>
+                    
+                    <p class="text-lg text-textMuted leading-relaxed mb-10">
+                        「ツールが多すぎて管理できない」「予約の電話対応で施術が止まる」<br class="hidden lg:block">
+                        そんなお悩みはありませんか？予約一元管理から、21日ルールに基づく<br class="hidden lg:block">
+                        LINEステップ配信まで、プロが構築・運用を代行します。
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="#contact" class="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-white bg-primary rounded-full shadow-lg shadow-primary/30 hover:bg-primaryHover hover:-translate-y-1 transition duration-300">
+                            無料オンライン診断を予約する
+                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                        <a href="#contact" class="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-primary bg-white border-2 border-borderLight rounded-full hover:border-primary hover:bg-accent transition duration-300">
+                            資料請求（PDF）
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Right: Device Mocks (SVG) -->
+                <div class="relative mx-auto w-full max-w-[500px] lg:max-w-none">
+                    <!-- PC Mockup -->
+                    <div class="relative bg-white rounded-xl border border-borderLight shadow-card overflow-hidden z-10 w-[90%] ml-auto">
+                        <div class="h-8 bg-surface border-b border-borderLight flex items-center px-4 gap-2">
+                            <div class="w-3 h-3 rounded-full bg-red-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-400"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-400"></div>
+                        </div>
+                        <div class="p-6 flex gap-6">
+                            <!-- Sidebar dummy -->
+                            <div class="w-1/4 flex flex-col gap-3">
+                                <div class="h-6 bg-accent rounded w-full mb-4"></div>
+                                <div class="h-4 bg-surface rounded w-3/4"></div>
+                                <div class="h-4 bg-surface rounded w-5/6"></div>
+                                <div class="h-4 bg-surface rounded w-4/5"></div>
+                                <div class="h-4 bg-surface rounded w-full"></div>
+                            </div>
+                            <!-- Main content dummy -->
+                            <div class="w-3/4">
+                                <div class="h-8 bg-surface rounded w-1/3 mb-6"></div>
+                                <div class="grid grid-cols-3 gap-4 mb-6">
+                                    <div class="h-20 bg-accent rounded-lg border border-primary/20"></div>
+                                    <div class="h-20 bg-surface rounded-lg"></div>
+                                    <div class="h-20 bg-surface rounded-lg"></div>
+                                </div>
+                                <div class="h-40 bg-surface rounded-lg w-full"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- SP Mockup (Overlapping) -->
+                    <div class="absolute -bottom-8 -left-4 w-[160px] h-[320px] bg-white rounded-[24px] border-4 border-slate-800 shadow-2xl z-20 overflow-hidden flex flex-col">
+                        <div class="h-14 bg-secondary flex items-center justify-center text-white text-xs font-bold">LINE</div>
+                        <div class="flex-1 bg-accent p-3 flex flex-col gap-3">
+                            <div class="self-start max-w-[80%] bg-white p-2 rounded-lg rounded-tl-none shadow-sm text-[10px] text-textMain">
+                                ご来店ありがとうございました！次回使えるクーポンです🎁
+                            </div>
+                            <div class="self-start w-[80%] h-20 bg-primary/20 rounded-lg border border-primary/30 flex items-center justify-center text-[10px] text-primary font-bold">
+                                次回20%OFFクーポン
+                            </div>
+                            <div class="self-end max-w-[80%] bg-green-400 p-2 rounded-lg rounded-tr-none shadow-sm text-[10px] text-white">
+                                次回予約お願いします！
+                            </div>
+                        </div>
+                        <div class="h-12 bg-white border-t border-borderLight flex items-center justify-center gap-4">
+                            <div class="w-16 h-8 bg-surface rounded-full"></div>
+                            <div class="w-16 h-8 bg-primary rounded-full"></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Decorative element -->
+                    <div class="absolute top-1/2 left-1/4 w-24 h-24 bg-yellow-100 rounded-full blur-2xl -z-10"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section class="py-24 bg-surface" id="problems">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-primary text-sm font-bold tracking-widest uppercase block mb-2">Problems</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-secondary">サロン運営で、<br class="sm:hidden">こんなお悩みありませんか？</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-borderLight/50 text-center relative overflow-hidden group">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-3">ツールが多くて疲弊</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        予約サイト、LINE、POSレジ…。管理画面がバラバラで、設定や更新に時間がかかりすぎている。
+                    </p>
+                    <!-- Decorative top border -->
+                    <div class="absolute top-0 left-0 w-full h-1 bg-borderLight group-hover:bg-primary transition-colors"></div>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-borderLight/50 text-center relative overflow-hidden group mt-4 md:mt-0">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-3">電話対応で施術が中断</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        接客中や施術中に予約の電話が鳴り、お客様を待たせてしまう。夜間の予約取りこぼしも多い。
+                    </p>
+                    <div class="absolute top-0 left-0 w-full h-1 bg-borderLight group-hover:bg-primary transition-colors"></div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="bg-white p-8 rounded-2xl shadow-soft border border-borderLight/50 text-center relative overflow-hidden group mt-4 md:mt-0">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-3">リピート率が上がらない</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        新規集客はできても、2回目・3回目の来店に繋がらない。効果的なフォローの仕組みがない。
+                    </p>
+                    <div class="absolute top-0 left-0 w-full h-1 bg-borderLight group-hover:bg-primary transition-colors"></div>
+                </div>
+            </div>
+            
+            <div class="mt-16 text-center">
+                <p class="text-xl font-bold text-secondary mb-6">その悩み、<span class="text-primary">サロンのちから</span>がすべて解決します。</p>
+                <div class="w-12 h-12 rounded-full border border-borderLight flex items-center justify-center mx-auto text-borderLight">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 bg-white" id="features">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-primary text-sm font-bold tracking-widest uppercase block mb-2">Features</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-secondary mb-4">売上を自動化する6つの機能</h2>
+                <p class="text-textMuted">設定も運用も丸投げ。必要な機能が最初から揃っています。</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1 -->
+                <div class="bg-surface rounded-[20px] p-8 border border-borderLight/50 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-6 border border-borderLight/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-2">予約の一元管理</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        LINE、Web、ポータルサイトからの予約を自動で一つのカレンダーに集約。ダブルブッキングを防ぎます。
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="bg-surface rounded-[20px] p-8 border border-borderLight/50 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-6 border border-borderLight/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-2">21日ルール・ステップ配信</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        来店後、最もリピート率が高まるタイミングで自動メッセージを配信。何もしなくても再来店を促します。
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="bg-surface rounded-[20px] p-8 border border-borderLight/50 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-6 border border-borderLight/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-2">LINEガチャ・クーポン</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        来店意欲を高めるゲーム性のある施策や、ターゲットを絞ったクーポン配信を簡単に実施できます。
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="bg-surface rounded-[20px] p-8 border border-borderLight/50 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-6 border border-borderLight/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-2">電子カルテ連携</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        お客様の施術履歴や写真をLINEと紐付けて管理。来店前の準備がスムーズになり、接客品質が向上します。
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="bg-surface rounded-[20px] p-8 border border-borderLight/50 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-6 border border-borderLight/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-2">予約自動リマインド</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        来店前日や当日に、LINEで自動リマインドメッセージを送信。無断キャンセル（ドタキャン）を大幅に削減します。
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="bg-surface rounded-[20px] p-8 border border-borderLight/50 hover:shadow-soft transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-white shadow-sm flex items-center justify-center text-primary mb-6 border border-borderLight/30">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                    <h3 class="text-lg font-bold text-secondary mb-2">分析ダッシュボード</h3>
+                    <p class="text-textMuted text-sm leading-relaxed">
+                        新規獲得数、リピート率、売上推移をわかりやすいグラフで可視化。勘に頼らない経営判断をサポートします。
+                    </p>
+                </div>
+            </div>
+
+            <!-- Middle CTA -->
+            <div class="mt-16 text-center">
+                <a href="#contact" class="inline-flex justify-center items-center px-8 py-4 text-base font-bold text-white bg-primary rounded-full shadow-lg shadow-primary/30 hover:bg-primaryHover transition">
+                    まずは無料で相談してみる（30分）
+                    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reasons / Philosophy Section -->
+    <section class="py-24 bg-surface relative overflow-hidden" id="reasons">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center mb-16">
+                <span class="text-primary text-sm font-bold tracking-widest uppercase block mb-2">Reasons & Philosophy</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-secondary mb-4">選ばれる理由と、私たちの想い</h2>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-20">
+                <!-- 実績・権威性 -->
+                <div class="order-2 lg:order-1">
+                    <div class="bg-white rounded-[20px] p-8 md:p-10 shadow-soft border border-borderLight/50">
+                        <div class="inline-block px-3 py-1 bg-accent text-primary text-xs font-bold rounded mb-4">実績とノウハウ</div>
+                        <h3 class="text-2xl font-bold text-secondary mb-6 leading-relaxed">
+                            「カラーのちから」など<br>
+                            FC本部としてのワンストップ支援体制
+                        </h3>
+                        <p class="text-textMuted text-sm leading-relaxed mb-8">
+                            システムを提供するだけのIT企業ではありません。<br>
+                            自らサロンを並列運用し、2年で20店舗を拡大したFC本部としての「現場のノウハウ」がシステムに組み込まれています。だからこそ、本当に効果のある施策だけを提供できます。
+                        </p>
+                        
+                        <!-- Number Badges -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="border border-borderLight rounded-xl p-4 text-center">
+                                <div class="text-sm text-textMuted mb-1">導入店舗数</div>
+                                <div class="text-3xl font-bold text-primary">20<span class="text-base text-textMain ml-1">店舗突破</span></div>
+                            </div>
+                            <div class="border border-borderLight rounded-xl p-4 text-center">
+                                <div class="text-sm text-textMuted mb-1">平均リピート率</div>
+                                <div class="text-3xl font-bold text-primary">80<span class="text-base text-textMain ml-1">%越え</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 理念 (読ませるデザイン) -->
+                <div class="order-1 lg:order-2">
+                    <h3 class="text-3xl font-bold text-secondary leading-snug mb-8">
+                        職人は<span class="text-primary">施術</span>へ、<br>
+                        オーナーは<span class="text-primary">経営</span>へ。
+                    </h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-accent border-l-4 border-primary p-4 rounded-r-lg">
+                            <p class="text-secondary font-bold text-sm leading-relaxed">
+                                「良い技術があればお客様は来る」<br>
+                                それは真実ですが、今の時代、技術を届けるための「仕組み」が不可欠です。
+                            </p>
+                        </div>
+                        
+                        <p class="text-textMuted text-sm leading-relaxed">
+                            しかし、ITツールの設定や日々のメッセージ配信に追われ、本来の施術や経営改善に向き合えないサロンオーナーを多数見てきました。
+                        </p>
+
+                        <ul class="space-y-4 mt-6">
+                            <li class="flex gap-3">
+                                <div class="mt-0.5 w-5 h-5 rounded-full bg-slate-200 flex items-center justify-center text-textMuted flex-shrink-0">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                </div>
+                                <span class="text-sm text-textMain">現状：ツール管理や予約電話に追われ、疲弊している</span>
+                            </li>
+                            <li class="flex gap-3">
+                                <div class="mt-0.5 w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
+                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                                </div>
+                                <span class="text-sm font-bold text-primary">理想：ITは丸投げし、目の前のお客様に100%集中できる</span>
+                            </li>
+                        </ul>
+
+                        <div class="pt-6 border-t border-borderLight mt-6 text-right">
+                            <p class="text-sm text-secondary font-bold">〇〇FC本部 代表 / サロンのちから 開発チーム</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Flow Section -->
+    <section class="py-24 bg-white" id="flow">
+        <div class="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-primary text-sm font-bold tracking-widest uppercase block mb-2">Flow</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-secondary mb-4">導入の流れ</h2>
+                <p class="text-textMuted">専門知識は一切不要。最短2週間で運用を開始できます。</p>
+            </div>
+
+            <div class="relative">
+                <!-- 縦の線 -->
+                <div class="absolute left-6 md:left-8 top-0 bottom-0 w-px bg-borderLight"></div>
+
+                <div class="space-y-8 relative">
+                    <!-- Step 1 -->
+                    <div class="flex gap-6 md:gap-8 items-start relative">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-primary text-white flex flex-col items-center justify-center flex-shrink-0 relative z-10 shadow-md">
+                            <span class="text-[10px] md:text-xs font-bold leading-none mb-1">STEP</span>
+                            <span class="text-xl md:text-2xl font-bold leading-none">01</span>
+                        </div>
+                        <div class="bg-surface rounded-2xl p-6 md:p-8 flex-1 border border-borderLight/50 shadow-sm">
+                            <h3 class="text-lg md:text-xl font-bold text-secondary mb-2">無料オンライン相談（30分）</h3>
+                            <p class="text-sm text-textMuted leading-relaxed">
+                                まずは現状の集客や予約管理のお悩みをお聞かせください。画面を見せながら、システムでどう解決できるかデモを交えてご説明します。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="flex gap-6 md:gap-8 items-start relative">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white border-2 border-primary text-primary flex flex-col items-center justify-center flex-shrink-0 relative z-10">
+                            <span class="text-[10px] md:text-xs font-bold leading-none mb-1">STEP</span>
+                            <span class="text-xl md:text-2xl font-bold leading-none">02</span>
+                        </div>
+                        <div class="bg-surface rounded-2xl p-6 md:p-8 flex-1 border border-borderLight/50 shadow-sm">
+                            <h3 class="text-lg md:text-xl font-bold text-secondary mb-2">要件ヒアリング・設計</h3>
+                            <p class="text-sm text-textMuted leading-relaxed">
+                                導入決定後、サロンのメニュー、スタッフ情報、現在抱えている顧客データなどをヒアリングし、最適なLINEの導線を設計します。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="flex gap-6 md:gap-8 items-start relative">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white border-2 border-primary text-primary flex flex-col items-center justify-center flex-shrink-0 relative z-10">
+                            <span class="text-[10px] md:text-xs font-bold leading-none mb-1">STEP</span>
+                            <span class="text-xl md:text-2xl font-bold leading-none">03</span>
+                        </div>
+                        <div class="bg-surface rounded-2xl p-6 md:p-8 flex-1 border border-borderLight/50 shadow-sm">
+                            <h3 class="text-lg md:text-xl font-bold text-secondary mb-2">アカウント構築・設定代行</h3>
+                            <p class="text-sm text-textMuted leading-relaxed">
+                                面倒なシステム設定、リッチメニューの作成、ステップ配信の文章作成などは、すべて弊社の専門チームが代行（丸投げ）します。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="flex gap-6 md:gap-8 items-start relative">
+                        <div class="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white border-2 border-primary text-primary flex flex-col items-center justify-center flex-shrink-0 relative z-10">
+                            <span class="text-[10px] md:text-xs font-bold leading-none mb-1">STEP</span>
+                            <span class="text-xl md:text-2xl font-bold leading-none">04</span>
+                        </div>
+                        <div class="bg-surface rounded-2xl p-6 md:p-8 flex-1 border border-borderLight/50 shadow-sm">
+                            <h3 class="text-lg md:text-xl font-bold text-secondary mb-2">運用開始・サポート</h3>
+                            <p class="text-sm text-textMuted leading-relaxed">
+                                設定完了後、スタッフ様向けの簡単な操作レクチャーを行い運用スタート。運用中の疑問点もチャット等でサポートします。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Price Section -->
+    <section class="py-24 bg-surface" id="price">
+        <div class="max-w-[1000px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-primary text-sm font-bold tracking-widest uppercase block mb-2">Price</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-secondary mb-6">料金プラン</h2>
+                
+                <!-- 人件費比較 (強調メッセージ) -->
+                <div class="inline-block bg-white px-6 py-4 rounded-xl shadow-sm border border-borderLight mb-8">
+                    <p class="text-sm md:text-base font-bold text-secondary">
+                        <span class="text-primary">「予約管理・配信担当」</span>をアルバイトで雇うと月額10万円以上。<br class="hidden md:block">
+                        システムに任せれば、<span class="text-xl text-primary border-b-2 border-primary">圧倒的な低コストで24時間365日</span>稼働します。
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 max-w-[800px] mx-auto">
+                <!-- Light Plan -->
+                <div class="bg-white rounded-2xl p-8 border border-borderLight shadow-sm flex flex-col">
+                    <h3 class="text-xl font-bold text-secondary mb-2 text-center">ライトプラン</h3>
+                    <p class="text-sm text-textMuted text-center mb-6">まずは予約を一元化したい方へ</p>
+                    <div class="text-center mb-8">
+                        <span class="text-sm font-bold text-textMuted">月額</span>
+                        <span class="text-4xl font-bold text-secondary mx-1">50,000</span>
+                        <span class="text-sm text-textMuted">円(税抜)</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm text-textMain">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            予約一元管理カレンダー
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-textMain">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            基本LINE連携（手動配信）
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-textMain">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            顧客カルテ管理
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-borderLight">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                            <span class="text-textMuted line-through">21日ルール・ステップ配信</span>
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-borderLight">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"></path></svg>
+                            <span class="text-textMuted line-through">設定・運用代行サポート</span>
+                        </li>
+                    </ul>
+                    <div class="text-xs text-textMuted text-center mb-6">※初期費用: 別途お見積り</div>
+                    <a href="#contact" class="block w-full py-3 text-center text-primary font-bold border-2 border-primary rounded-full hover:bg-accent transition">このプランで相談する</a>
+                </div>
+
+                <!-- Standard Plan (Recommended) -->
+                <div class="bg-white rounded-2xl p-8 border-2 border-primary shadow-card flex flex-col relative transform md:-translate-y-4">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary text-white px-4 py-1 rounded-full text-xs font-bold tracking-wider">
+                        1番人気・おすすめ
+                    </div>
+                    <h3 class="text-xl font-bold text-secondary mb-2 text-center">スタンダード（運用代行）</h3>
+                    <p class="text-sm text-textMuted text-center mb-6">IT業務をすべて丸投げしたい方へ</p>
+                    <div class="text-center mb-8">
+                        <span class="text-sm font-bold text-textMuted">月額</span>
+                        <span class="text-4xl font-bold text-primary mx-1">80,000</span>
+                        <span class="text-sm text-textMuted">円(税抜)</span>
+                    </div>
+                    <ul class="space-y-4 mb-8 flex-1">
+                        <li class="flex items-center gap-3 text-sm text-textMain font-bold">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            ライトプランの全機能
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-textMain font-bold">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            21日ルール・ステップ自動配信
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-textMain font-bold">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            LINEガチャ等のリピート施策
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-textMain font-bold">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            初期アカウント構築・設定代行
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-textMain font-bold">
+                            <svg class="w-5 h-5 text-primary flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                            専任担当によるチャットサポート
+                        </li>
+                    </ul>
+                    <div class="text-xs text-textMuted text-center mb-6">※初期構築費: 150,000円〜</div>
+                    <a href="#contact" class="block w-full py-3 text-center text-white bg-primary font-bold rounded-full shadow-lg shadow-primary/30 hover:bg-primaryHover transition">無料診断を予約する</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-24 bg-white" id="faq">
+        <div class="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-primary text-sm font-bold tracking-widest uppercase block mb-2">FAQ</span>
+                <h2 class="text-3xl lg:text-4xl font-bold text-secondary mb-4">よくあるご質問</h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <details class="bg-surface border border-borderLight rounded-xl overflow-hidden group">
+                    <summary class="p-6 cursor-pointer font-bold text-secondary flex justify-between items-center outline-none">
+                        <span>Q. パソコンが苦手なスタッフでも使えますか？</span>
+                        <svg class="w-5 h-5 text-primary transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-textMuted leading-relaxed">
+                        A. はい、問題ありません。日常的な操作（予約の確認やカルテの入力など）は非常にシンプルで、スマホからでも直感的に操作できるように設計されています。難しい初期設定は弊社がすべて代行します。
+                    </div>
+                </details>
+
+                <!-- FAQ Item 2 -->
+                <details class="bg-surface border border-borderLight rounded-xl overflow-hidden group">
+                    <summary class="p-6 cursor-pointer font-bold text-secondary flex justify-between items-center outline-none">
+                        <span>Q. 導入までにどれくらい期間がかかりますか？</span>
+                        <svg class="w-5 h-5 text-primary transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-textMuted leading-relaxed">
+                        A. お申し込みから最短で2週間ほどで運用開始が可能です。サロン様のメニュー数や顧客データの移行ボリュームによって前後する場合がございます。
+                    </div>
+                </details>
+
+                <!-- FAQ Item 3 -->
+                <details class="bg-surface border border-borderLight rounded-xl overflow-hidden group">
+                    <summary class="p-6 cursor-pointer font-bold text-secondary flex justify-between items-center outline-none">
+                        <span>Q. 現在使っている予約サイト（ポータル等）と併用できますか？</span>
+                        <svg class="w-5 h-5 text-primary transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-textMuted leading-relaxed">
+                        A. はい、併用可能です。大手ポータルサイトの予約情報を取り込み、カレンダー上で一元管理する機能を備えておりますので、ダブルブッキングの心配はありません。
+                    </div>
+                </details>
+
+                <!-- FAQ Item 4 -->
+                <details class="bg-surface border border-borderLight rounded-xl overflow-hidden group">
+                    <summary class="p-6 cursor-pointer font-bold text-secondary flex justify-between items-center outline-none">
+                        <span>Q. 無料相談では何を話すのですか？押し売りされませんか？</span>
+                        <svg class="w-5 h-5 text-primary transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </summary>
+                    <div class="px-6 pb-6 text-sm text-textMuted leading-relaxed">
+                        A. 無理な営業は一切行いません。まずは貴店の課題をヒアリングし、本システムが役立つかどうかを客観的にお伝えします。システム画面のデモをお見せしながら、具体的な運用イメージを掴んでいただくための30分です。
+                    </div>
+                </details>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA Section (Form Area) -->
+    <section class="py-24 bg-accent relative" id="contact">
+        <div class="absolute inset-0 bg-dot-pattern opacity-50"></div>
+        <div class="max-w-[800px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="bg-white rounded-3xl p-8 md:p-12 shadow-card border border-primary/20">
+                <div class="text-center mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-secondary mb-4">無料オンライン相談・資料請求</h2>
+                    <p class="text-textMuted text-sm">
+                        以下のフォームに必要事項をご記入ください。<br class="hidden sm:block">担当者より1営業日以内にご連絡いたします。
+                    </p>
+                </div>
+
+                <form class="space-y-6">
+                    <div>
+                        <label class="block text-sm font-bold text-secondary mb-2">ご希望の内容 <span class="text-white bg-red-500 text-[10px] px-2 py-0.5 rounded ml-2">必須</span></label>
+                        <div class="flex gap-4">
+                            <label class="flex-1 flex items-center p-3 border border-borderLight rounded-lg cursor-pointer hover:bg-surface">
+                                <input type="radio" name="inquiry_type" class="text-primary focus:ring-primary h-4 w-4" checked>
+                                <span class="ml-2 text-sm text-textMain">無料相談（Zoom30分）</span>
+                            </label>
+                            <label class="flex-1 flex items-center p-3 border border-borderLight rounded-lg cursor-pointer hover:bg-surface">
+                                <input type="radio" name="inquiry_type" class="text-primary focus:ring-primary h-4 w-4">
+                                <span class="ml-2 text-sm text-textMain">資料請求（PDF）</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-secondary mb-2">サロン名 / 会社名 <span class="text-white bg-red-500 text-[10px] px-2 py-0.5 rounded ml-2">必須</span></label>
+                        <input type="text" class="w-full p-3 border border-borderLight rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="例：Hair Salon さくら">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-secondary mb-2">お名前 <span class="text-white bg-red-500 text-[10px] px-2 py-0.5 rounded ml-2">必須</span></label>
+                            <input type="text" class="w-full p-3 border border-borderLight rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="例：山田 太郎">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-secondary mb-2">電話番号</label>
+                            <input type="tel" class="w-full p-3 border border-borderLight rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="例：090-1234-5678">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-secondary mb-2">メールアドレス <span class="text-white bg-red-500 text-[10px] px-2 py-0.5 rounded ml-2">必須</span></label>
+                        <input type="email" class="w-full p-3 border border-borderLight rounded-lg focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="例：info@example.com">
+                    </div>
+
+                    <div class="pt-4 text-center">
+                        <p class="text-xs text-textMuted mb-6">送信することで、プライバシーポリシーに同意したものとみなされます。</p>
+                        <button type="submit" class="w-full sm:w-auto px-12 py-4 text-base font-bold text-white bg-primary rounded-full shadow-lg shadow-primary/30 hover:bg-primaryHover transition">
+                            送信する
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12 pb-24 md:pb-12">
+        <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded bg-primary flex items-center justify-center text-white font-bold text-sm">S</div>
+                <span class="font-bold text-lg text-white tracking-tight">サロンのちから</span>
+            </div>
+            
+            <div class="flex gap-6 text-sm">
+                <a href="#" class="hover:text-white transition">運営会社</a>
+                <a href="#" class="hover:text-white transition">利用規約</a>
+                <a href="#" class="hover:text-white transition">プライバシーポリシー</a>
+                <a href="#" class="hover:text-white transition">特定商取引法に基づく表記</a>
+            </div>
+            
+            <div class="text-xs">
+                &copy; 2026 サロンのちから. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- SP Fixed Bottom CTA -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur border-t border-borderLight p-3 z-50 flex gap-2">
+        <a href="#contact" class="flex-1 py-3 text-sm font-bold text-primary border border-primary rounded-full text-center bg-white">資料請求</a>
+        <a href="#contact" class="flex-[2] py-3 text-sm font-bold text-white bg-primary rounded-full text-center shadow-lg shadow-primary/30">無料診断を予約</a>
+    </div>
+
+</body>
+</html>
